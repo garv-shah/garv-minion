@@ -98,4 +98,4 @@ async def spam(ctx, *args):
   server_settings[serverlist.index(ctx.message.guild.id)].mode = 1
 
 
-bot.run('ODg5NzA3Mjk1NDkwMDQ4MDU0.YUlKfQ.kRrCToKu7eMflf-miKW5faYCrRg')
+bot.run('ODg5NzA3Mjk1NDkwMDQ4MDU0.YUlKfQ.1KpPXyCUAQoE7b7noKGoIC7TVrk')
