@@ -23,7 +23,7 @@ global server_settings
 serverlist = []
 server_settings = []
 
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix='g!')
 
 
 @bot.event
@@ -34,7 +34,7 @@ async def on_ready():
         serverlist.append(guild.id)
 
     for x in range(len(serverlist)):
-        server_settings.append(server_vars(False, '', 0, 0, 0, '', None, None, None, "$"))
+        server_settings.append(server_vars(False, '', 0, 0, 0, '', None, None, None, "g!"))
 
 
 class Utility(commands.Cog):
