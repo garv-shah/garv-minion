@@ -2,6 +2,11 @@ import discord
 import time
 from discord.ext import commands
 from discord.errors import Forbidden
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+token = getenv("TOKEN")
 
 
 class server_vars:
@@ -41,6 +46,7 @@ class Utility(commands.Cog):
     """
   Commands that actually do something kinda useful!
   """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -86,7 +92,7 @@ class Utility(commands.Cog):
             else:
                 glob.dmstate = True
                 glob.dmuser = message.content
-                glob.dmuser = glob.dmuser.split('>')[0].split('@')[1]
+                glob.dmuser = glob.dmuser.split('>')[0].split('!')[1]
                 glob.dmuser = await self.bot.fetch_user(int(glob.dmuser))
                 await message.channel.send(f"spamming {glob.dmuser} >:)")
                 await message.channel.send("and finally, what message would u like to spam?")
@@ -120,11 +126,22 @@ class Utility(commands.Cog):
             await ctx.send('spammy at ur service! how many times would u like to spam?')
             server_settings[serverlist.index(ctx.message.guild.id)].mode = 1
 
+    @commands.command()
+    async def stonks(self, ctx, *args):
+        """
+      sends the asx stock file
+      """
+        file = discord.File("NOVA_Stock_Advice.png")
+        e = discord.Embed(title="ASX STOCK GAME", description="Daily NOVA Stocks Graph")
+        e.set_image(url="attachment://NOVA_Stock_Advice.png")
+        await ctx.send(file=file, embed=e)
+
 
 class Games(commands.Cog):
     """
   a few little games
   """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -169,6 +186,7 @@ class Games(commands.Cog):
             await message.channel.send(
                 f"Are you {(int(glob.age3) * 70 + int(glob.age5) * 21 + int(glob.age7) * 15) % 105} years old?")
             glob.mode = 0
+
 
 async def send_embed(ctx, embed):
     try:
@@ -267,4 +285,4 @@ bot.add_cog(Utility(bot))
 bot.add_cog(Games(bot))
 bot.add_cog(Help(bot))
 
-bot.run('')
+bot.run(token)
