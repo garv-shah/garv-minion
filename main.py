@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.errors import Forbidden
 from dotenv import load_dotenv
 from os import getenv
+from tradingview_ta import TA_Handler, Interval, Exchange
 
 load_dotenv()
 token = getenv("TOKEN")
@@ -129,12 +130,31 @@ class Utility(commands.Cog):
     @commands.command()
     async def stonks(self, ctx, *args):
         """
-      sends the asx stock file
+      sends a graph of the current best stocks to buy on the asx game
       """
         file = discord.File("NOVA_Stock_Advice.png")
         e = discord.Embed(title="ASX STOCK GAME", description="Daily NOVA Stocks Graph")
         e.set_image(url="attachment://NOVA_Stock_Advice.png")
         await ctx.send(file=file, embed=e)
+
+    @commands.command()
+    async def stocklookup(self, ctx, *args):
+        """
+      sends a graph of the current best stocks to buy on the asx game
+      """
+        try:
+            output = TA_Handler(
+                symbol=args[0],
+                screener="australia",
+                exchange="ASX",
+                interval=Interval.INTERVAL_1_DAY
+            )
+
+            summary = output.get_analysis().summary
+            e = discord.Embed(title=f"Stock Lookup for {args[0].upper()}", description=f'**Recommendation:** {summary["RECOMMENDATION"]}\n\n*Individual Factors*:\nBuy: {summary["BUY"]}\nSell: {summary["SELL"]}\nNeutral: {summary["NEUTRAL"]}\n')
+            await ctx.send(embed=e)
+        except Exception as err:
+            await ctx.send(err)
 
 
 class Games(commands.Cog):

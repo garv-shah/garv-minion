@@ -358,6 +358,7 @@ symbol_list = [
     "ZIM"
 ]
 
+
 def main():
     output_list = []
     output_dict = {}
@@ -397,7 +398,9 @@ def main():
     plt.grid()
     plt.savefig('./NOVA_Stock_Advice.png')
 
+    sleep(3600 - time() % 3600)
+    main()
+
 
 if __name__ == "__main__":
     main()
-    sleep(3600 - time() % 3600)
