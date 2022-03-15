@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from time import sleep, time
 
 import matplotlib.pyplot as plt
 import seaborn as sns
