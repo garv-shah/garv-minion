@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from time import sleep, time
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -29,29 +30,29 @@ print(symbol_to_name)
 output_list = []
 output_dict = {}
 
-for symbol in symbol_list:
-    print(symbol)
-    output = TA_Handler(
-        symbol=symbol,
-        screener="australia",
-        exchange="ASX",
-        interval=Interval.INTERVAL_1_DAY
-    )
+    for symbol in symbol_list:
+        print(symbol)
+        output = TA_Handler(
+            symbol=symbol,
+            screener="australia",
+            exchange="ASX",
+            interval=Interval.INTERVAL_1_DAY
+        )
 
-    summary = output.get_analysis().summary
+        summary = output.get_analysis().summary
 
-    output_list.append([symbol, summary])
-    if summary['RECOMMENDATION'] == 'STRONG_BUY':
-        output_dict[symbol] = summary
+        output_list.append([symbol, summary])
+        if summary['RECOMMENDATION'] == 'STRONG_BUY':
+            output_dict[symbol] = summary
 
-print(output_dict)
+    print(output_dict)
 
-with open("./data/ASX_Stock_Game_Data.csv", 'w+', newline='') as csvfile:
-    fieldnames = list(output_dict.keys())
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerow(output_dict)
-    csvfile.close()
+    with open("./data/ASX_Stock_Game_Data.csv", 'w+', newline='') as csvfile:
+        fieldnames = list(output_dict.keys())
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow(output_dict)
+        csvfile.close()
 
 keys = list(output_dict.keys())
 vals = [float(output_dict[key]['BUY']) for key in keys]
@@ -70,3 +71,7 @@ plt.ylabel('Buy Intensity')
 plt.title('Daily NOVA Stock Advice')
 plt.grid()
 plt.savefig('./NOVA_Stock_Advice.png')
+
+
+if __name__ == "__main__":
+    main()
