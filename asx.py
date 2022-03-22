@@ -4,7 +4,6 @@ from time import sleep, time
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-from matplotlib.offsetbox import AnchoredText
 from tradingview_ta import TA_Handler, Interval
 
 symbol_list = []
@@ -24,11 +23,13 @@ try:
 except FileNotFoundError:
     pass
 
-print(symbol_list)
-print(symbol_to_name)
 
-output_list = []
-output_dict = {}
+def main():
+    print(symbol_list)
+    print(symbol_to_name)
+
+    output_list = []
+    output_dict = {}
 
     for symbol in symbol_list:
         print(symbol)
@@ -54,23 +55,26 @@ output_dict = {}
         writer.writerow(output_dict)
         csvfile.close()
 
-keys = list(output_dict.keys())
-vals = [float(output_dict[key]['BUY']) for key in keys]
-plt.style.use('seaborn-dark')
-plt.figure(figsize=(23, 5))
-ax = sns.barplot(x=keys, y=vals)
+    keys = list(output_dict.keys())
+    vals = [float(output_dict[key]['BUY']) for key in keys]
+    plt.style.use('seaborn-dark')
+    plt.figure(figsize=(23, 5))
+    ax = sns.barplot(x=keys, y=vals)
 
-for x in range(len(list(output_dict.keys()))):
-    ax.text(x-0.1, 0.85, symbol_to_name[list(output_dict.keys())[x]][0:55], fontsize=6.5, rotation=90)
+    for x in range(len(list(output_dict.keys()))):
+        ax.text(x - 0.1, 0.85, symbol_to_name[list(output_dict.keys())[x]][0:55], fontsize=6.5, rotation=90)
 
-now = datetime.now()
-time_string = now.strftime("%d/%m/%Y %H:%M:%S")
-plt.text(0.005, 0.02, f"Generated at {time_string} - Garv Shah", fontsize=14, transform=plt.gcf().transFigure)
-plt.xlabel('\nSymbol')
-plt.ylabel('Buy Intensity')
-plt.title('Daily NOVA Stock Advice')
-plt.grid()
-plt.savefig('./NOVA_Stock_Advice.png')
+    now = datetime.now()
+    time_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    plt.text(0.005, 0.02, f"Generated at {time_string} - Garv Shah", fontsize=14, transform=plt.gcf().transFigure)
+    plt.xlabel('\nSymbol')
+    plt.ylabel('Buy Intensity')
+    plt.title('Daily NOVA Stock Advice')
+    plt.grid()
+    plt.savefig('./NOVA_Stock_Advice.png')
+
+    sleep(3600 - time() % 3600)
+    main()
 
 
 if __name__ == "__main__":
